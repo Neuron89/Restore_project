@@ -2,7 +2,7 @@
 
 package_list="/home/neuron/Documents/playbook_project/sub_scripts/pacman.txt"
 current_list="/home/neuron/Documents/playbook_project/sub_scripts/pacman_current.txt"
-missing="/home/neuron/Documents/playbook_project/missing_packages.txt"
+missing="/home/neuron/Documents/playbook_project/tmp/missing_packages.txt"
 
 #gets the current list of packages
 echo "getting current list of packages"
@@ -31,5 +31,5 @@ while true; do
     esac
 done
 
-rm /home/neuron/Documents/playbook_project/missing_packages.txt
+rm /home/neuron/Documents/playbook_project/tmp/missing_packages.txt
 
