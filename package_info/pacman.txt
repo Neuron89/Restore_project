@@ -7,13 +7,13 @@ ark
 baobab
 base
 base-devel
-blackarch-keyring
 blueman
 bluez-utils
 brightnessctl
 cliphist
 cmatrix
 code
+composer
 dhclient
 discord
 dolphin
@@ -87,6 +87,7 @@ kismet
 kitty
 kvantum
 kvantum-qt5
+lazygit
 libnewt
 lightdm
 lightdm-gtk-greeter
@@ -95,6 +96,7 @@ linux-firmware
 linux-headers
 linux-wallpaperengine-git
 loupe
+luarocks
 malcontent
 mesa
 nano
@@ -126,6 +128,7 @@ pipewire-jack
 playerctl
 pokemon-colorscripts-git
 polkit-gnome
+pv
 pyright
 python-pyamdgpuinfo
 python-scapy
@@ -150,7 +153,6 @@ slurp
 snapshot
 sof-firmware
 spicetify-themes-git
-spiderfoot
 spotify-launcher
 spotify-tui
 starship
@@ -179,7 +181,6 @@ waybar
 weechat
 wf-recorder
 wget
-wifijammer
 wl-clipboard
 wlogout
 xdg-desktop-portal-gnome
@@ -251,6 +252,7 @@ xorg-xwininfo
 xorg-xwud
 xterm
 yay
+yay-debug
 yelp
 zsh
 zsh-theme-powerlevel10k-git

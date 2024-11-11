@@ -29,7 +29,10 @@ if [ -s "${extras}" ]; then
     echo -e "\nWould you like to update package_list with these packages? (y/n)"
     read -r update_choice
     if [[ "$update_choice" =~ ^[Yy]$ ]]; then
-        cat "${extras}" >> "${package_list}"
+        # Create a temporary file with sorted, unique packages
+        sort -u "${package_list}" "${extras}" > "${package_list}.tmp"
+        # Replace the original file with the merged, sorted list
+        mv "${package_list}.tmp" "${package_list}"
         echo "Updated package_list with new packages."
         rm "${extras}"
         exit 0
