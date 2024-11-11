@@ -3,6 +3,13 @@
 package_list="$HOME/Documents/playbook_project/package_info/pacman.txt"
 current_list="/$HOME/Documents/playbook_project/package_info/pacman_current.txt"
 missing="/$HOME/Documents/playbook_project/tmp/missing_packages.txt"
+extras="/$HOME/Documents/playbook_project/tmp/extra_packages.txt"
+
+# Check last modified date of package_list
+last_updated=$(stat -c %y "$package_list" 2>/dev/null)
+if [ -n "$last_updated" ]; then
+    echo "Package list was last updated on: $last_updated"
+fi
 
 #gets the current list of packages
 echo "getting current list of packages"
@@ -11,33 +18,69 @@ sleep 1
 
 #compares the set list to the currently installed packages
 echo "comparing list of current packages"
-# sed is used to format the output of diff. s/^[<>]// is used to replace anything in the [] with anything inbetween the //. s/^[ \t]// is used to replace any empty spaces at the begining of the line to keep formating clean. the G at the end is to apply this globally. the following sed is to remove the numbers created on the list. 1d deletes he first line; then we skip the next with n; and then delete with d. that will repeat all the way down.
-diff ${package_list} ${current_list} | sed 's/^[<>]//;s/^[ \t]//g' | sed '1d; n; d' > "${missing}" 
+
+# Find packages in current_list that aren't in package_list
+diff ${package_list} ${current_list} | grep "^>" | sed 's/^>//;s/^[ \t]//g' > "${extras}"
+
+# Check if there are extra packages
+if [ -s "${extras}" ]; then
+    echo -e "\nFound additional packages in your system that are not in package_list:"
+    cat "${extras}"
+    echo -e "\nWould you like to update package_list with these packages? (y/n)"
+    read -r update_choice
+    if [[ "$update_choice" =~ ^[Yy]$ ]]; then
+        cat "${extras}" >> "${package_list}"
+        echo "Updated package_list with new packages."
+        rm "${extras}"
+        exit 0
+    fi
+fi
+
+# Find packages in package_list that aren't in current_list
+diff ${package_list} ${current_list} | grep "^<" | sed 's/^<//;s/^[ \t]//g' > "${missing}"
 sleep 1
 
-#displays missing packages
-echo "missing packages:"
-cat ${missing}
-sleep 1
+# Function to display packages with numbers
+display_packages() {
+    echo "Missing packages:"
+    local i=1
+    while IFS= read -r package; do
+        echo "$i) $package"
+        ((i++))
+    done < "$missing"
+    echo -e "\nPress Enter to install all packages, or enter package numbers (space-separated) to install specific ones:"
+}
 
-#statement to ask if you want to install the packages
-while true; do
-    read -p "Install missing packages? (y/n): " yn
-    case $yn in
-        [Yy]* ) echo "Installing missing packages..."
-                # Read packages from the missing packages file and install them
-                while read -r package; do
-                    sudo pacman -S --noconfirm "$package"
-                done < "$missing"
-                break;;
-        [Nn]* ) echo "Exiting..."
-                exit;;
-        * ) echo "Please answer yes (y) or no (n).";;
-    esac
-done
+# Display numbered packages
+display_packages
 
-#deletes the temp file 
-rm "${missing}" "${current_list}"
+# Read user selection
+read -r selection
+
+# Process package selection
+if [ -z "$selection" ]; then
+    echo "Installing all missing packages..."
+    while read -r package; do
+        sudo pacman -S --noconfirm "$package"
+    done < "$missing"
+else
+    # Convert missing packages file to array
+    mapfile -t packages < "$missing"
+    
+    # Process each selected number
+    for num in $selection; do
+        if [ "$num" -le "${#packages[@]}" ] && [ "$num" -gt 0 ]; then
+            index=$((num - 1))
+            echo "Installing ${packages[$index]}..."
+            sudo pacman -S --noconfirm "${packages[$index]}"
+        else
+            echo "Invalid selection: $num"
+        fi
+    done
+fi
+
+#deletes the temp files
+rm "${missing}" "${current_list}" "${extras}" 2>/dev/null
 
 #updating all packages
 sudo pacman -Syu --noconfirm
