@@ -1,3 +1,9 @@
+# add a zip function the backedup home directory 
+
+
+
+
+
 #!/bin/bash
 
 # Check if pv is installed
