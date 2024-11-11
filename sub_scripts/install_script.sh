@@ -3,8 +3,8 @@
 #need to clean up prompts and what is being asked. its confusing what is being updated and which files are being added to or removed.
 # check to see what pkg manager is installed and then run a check to see if all pkgs on current list are avaliable on the systems pkg manager. if not, ask if they would like to install another AUR. if no, sort file based on packages that can be installed and then only run that file.
 # create a linked directory that matches up .conf with the up to date pkg list. this way you can backup all your pkgs and your .conf files and have them match when you download on a new system.
-
-
+#
+# [!bUg] not checking current vs backup file properly and will keep (trying) to install the orginal missing pkgs.  
 
 #!/bin/bash
 
