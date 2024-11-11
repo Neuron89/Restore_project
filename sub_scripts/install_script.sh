@@ -1,3 +1,5 @@
+# check to see if this is the first time running this (is there a pkg list generated already) if its the first time, create the main list.
+#figure out how to make it not specific to ME and make it so anyone can create a backup and then use it as need be.
 #need to clean up prompts and what is being asked. its confusing what is being updated and which files are being added to or removed.
 # check to see what pkg manager is installed and then run a check to see if all pkgs on current list are avaliable on the systems pkg manager. if not, ask if they would like to install another AUR. if no, sort file based on packages that can be installed and then only run that file.
 #!/bin/bash
