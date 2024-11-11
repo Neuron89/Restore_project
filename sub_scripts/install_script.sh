@@ -1,3 +1,5 @@
+#need to clean up prompts and what is being asked. its confusing what is being updated and which files are being added to or removed.
+
 #!/bin/bash
 
 package_list="$HOME/Documents/playbook_project/package_info/pacman.txt"
