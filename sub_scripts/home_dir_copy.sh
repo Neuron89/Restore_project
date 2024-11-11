@@ -1,5 +1,5 @@
 # add a zip function the backedup home directory 
-
+# check for current back up folder and ask if it should be overwritten or change name?
 
 
 

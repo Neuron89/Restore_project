@@ -37,7 +37,7 @@ while true; do
 done
 
 #deletes the temp file 
-rm "${missing}"
+rm "${missing}" "${current_list}"
 
 #updating all packages
 sudo pacman -Syu --noconfirm
